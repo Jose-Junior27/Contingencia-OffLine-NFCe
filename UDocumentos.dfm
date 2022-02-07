@@ -1,9 +1,9 @@
 object frmDocumentos: TfrmDocumentos
   Left = 0
   Top = 0
+  Width = 1155
+  Height = 710
   Caption = 'Demo Conting'#234'ncia NFCe ( Documentos OFF-Line )'
-  ClientHeight = 679
-  ClientWidth = 1147
   Color = clWindow
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -42,6 +42,7 @@ object frmDocumentos: TfrmDocumentos
           Caption = 
             'Emitidas Off-Line (Ser'#227'o Transmitidas quando a conex'#227'o estiver O' +
             'n-Line)'
+          Color = clWindow
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clGrayText
           Font.Height = -11
@@ -57,7 +58,6 @@ object frmDocumentos: TfrmDocumentos
           Height = 297
           Align = alClient
           DataSource = DM.dsOffLine
-          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           TabOrder = 1
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
@@ -91,7 +91,6 @@ object frmDocumentos: TfrmDocumentos
           Height = 200
           Align = alBottom
           DataSource = DM.dsOffLineErro
-          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           PopupMenu = PopupMenu1
           TabOrder = 3
           TitleFont.Charset = DEFAULT_CHARSET
@@ -114,6 +113,7 @@ object frmDocumentos: TfrmDocumentos
             'Estes documentos ficaram pendentes de consulta na SEFAZ ap'#243's ent' +
             'rar em Conting'#234'ncia. (Ser'#227'o Cancelados ou Inutilizados quando a ' +
             'conex'#227'o estiver On-Line).'
+          Color = clWindow
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clGrayText
           Font.Height = -11
@@ -129,7 +129,6 @@ object frmDocumentos: TfrmDocumentos
           Height = 537
           Align = alClient
           DataSource = DM.dsPendentes
-          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           TabOrder = 1
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
@@ -153,19 +152,18 @@ object frmDocumentos: TfrmDocumentos
       1147
       63)
     object Button1: TButton
-      Left = 1048
+      Left = 992
       Top = 9
-      Width = 81
+      Width = 137
       Height = 41
       Anchors = [akRight, akBottom]
       Caption = 'Sair'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -24
+      Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      Style = bsCommandLink
       TabOrder = 0
       OnClick = Button1Click
     end

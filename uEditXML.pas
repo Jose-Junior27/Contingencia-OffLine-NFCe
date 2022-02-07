@@ -3,9 +3,9 @@ unit uEditXML;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, Vcl.OleCtrls, SHDocVw;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, ComCtrls, ExtCtrls, StdCtrls,
+  SHDocVw, DB, DBClient, Grids, DBGrids, OleCtrls;
 
 ResourceString
   SErroCampoInvalido = 'Valor inválido para o campo: %s';

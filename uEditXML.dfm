@@ -1,9 +1,9 @@
 object frm_Edit_XML: Tfrm_Edit_XML
   Left = 0
   Top = 0
+  Width = 1134
+  Height = 654
   Caption = 'Editar XML'
-  ClientHeight = 623
-  ClientWidth = 1126
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -40,10 +40,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
           Height = 531
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 344
-          ExplicitTop = 96
-          ExplicitWidth = 300
-          ExplicitHeight = 150
           ControlData = {
             4C00000058730000E13600000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -57,6 +53,7 @@ object frm_Edit_XML: Tfrm_Edit_XML
           Width = 1116
           Height = 62
           Align = alBottom
+          Color = clWindow
           TabOrder = 1
           DesignSize = (
             1116
@@ -69,7 +66,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Anchors = [akRight, akBottom]
             Caption = 'Disponibilizar para Transmiss'#227'o'
             Enabled = False
-            Style = bsCommandLink
             TabOrder = 0
             OnClick = btnEnviarClick
           end
@@ -84,18 +80,18 @@ object frm_Edit_XML: Tfrm_Edit_XML
           Width = 1116
           Height = 62
           Align = alBottom
+          Color = clWindow
           TabOrder = 0
           DesignSize = (
             1116
             62)
           object btnGravar: TButton
-            Left = 1002
+            Left = 944
             Top = 5
-            Width = 97
+            Width = 155
             Height = 43
             Anchors = [akRight, akBottom]
             Caption = 'Gravar'
-            Style = bsCommandLink
             TabOrder = 0
             OnClick = btnGravarClick
           end
@@ -114,6 +110,7 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 24
             Align = alTop
             Caption = 'Destinat'#225'rio'
+            Color = clWindow
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -129,7 +126,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 87
             Align = alClient
             DataSource = dsDest
-            Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
             TabOrder = 1
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -244,6 +240,7 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 24
             Align = alTop
             Caption = 'Itens'
+            Color = clWindow
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -259,7 +256,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 169
             Align = alClient
             DataSource = dsItens
-            Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
             TabOrder = 1
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -329,14 +325,12 @@ object frm_Edit_XML: Tfrm_Edit_XML
                 Expanded = False
                 FieldName = 'ICMSCST'
                 Title.Caption = 'CST/CSOSN'
-                Width = 64
                 Visible = True
               end
               item
                 Expanded = False
                 FieldName = 'PISCST'
                 Title.Caption = 'CST PIS '
-                Width = 64
                 Visible = True
               end
               item
@@ -375,7 +369,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 89
             Align = alClient
             DataSource = dsPagto
-            Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
             TabOrder = 0
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clWindowText
@@ -429,6 +422,7 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 24
             Align = alTop
             Caption = 'Pagamento'
+            Color = clWindow
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -452,6 +446,7 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Height = 24
             Align = alTop
             Caption = 'Entrega'
+            Color = clWindow
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -459,8 +454,6 @@ object frm_Edit_XML: Tfrm_Edit_XML
             Font.Style = [fsBold]
             ParentFont = False
             TabOrder = 0
-            ExplicitLeft = 2
-            ExplicitTop = 9
           end
           object DBGrid4: TDBGrid
             Left = 1

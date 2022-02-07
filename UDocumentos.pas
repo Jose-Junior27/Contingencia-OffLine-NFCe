@@ -3,9 +3,9 @@ unit UDocumentos;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.ComCtrls, Data.DB,
-  Vcl.Grids, Vcl.DBGrids, Vcl.StdCtrls, Vcl.Menus;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Forms, Dialogs, ComCtrls, DB,
+  Grids, DBGrids, StdCtrls, Menus, Controls, ExtCtrls;
 
 type
   TfrmDocumentos = class(TForm)

@@ -30,13 +30,15 @@
 {       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
 {******************************************************************************}
 
+{$I ACBr.inc}
+
 unit uContingenciaNFCe;
 
 interface
 
 uses
   Classes, SysUtils, Contnrs, ACBrUtil, ACBrDFeUtil, ACBrBase, ACBrNFeConfiguracoes,
-  pcnConversao, ACBrNFe, DateUtils, TypInfo, System.IniFiles, vcl.ExtCtrls, System.StrUtils,
+  pcnConversao, ACBrNFe, DateUtils, TypInfo, IniFiles, ExtCtrls, StrUtils,
   syncobjs;
 
 const
@@ -83,6 +85,8 @@ type
   TOnLogOffLine = procedure(ALogOffLine: String) of object;
   TOnAlertaOffLine = procedure(AAlerta: Integer) of object;
   TOnBloqueioOffLine = procedure(ABloqueio: Integer) of object;
+  TOnAtualizaTransmissaoOffLine = procedure(AChave, AXML: String) of object;
+  TOnAtualizaTransmissaoPendente = procedure(ATipoDoc: Char; AChave, AXML: String) of object;
 
  {TConfigContigencia}
   TConfigContigencia = class
@@ -110,7 +114,6 @@ type
 
     public
       constructor Create(ANomeArquivo: String);
-      destructor Destroy; override;
 
       procedure SalvarArquivo;
       procedure CarregarArquivo;
@@ -143,7 +146,6 @@ type
       FDataHoraTransmissao: TDateTime;
     public
       constructor Create();
-      destructor Destroy; override;
 
       procedure Assign(DeNFCeEmitidaOffLine: TNFCeEmitidaOffLine);
       property Chave: String read FChave write FChave;
@@ -178,7 +180,6 @@ type
       FInutilizada: Boolean;
     public
       constructor Create();
-      destructor Destroy; override;
 
       procedure Assign(DeNFCePendentes: TNFCePendentes);
       property Chave: String read FChave write FChave;
@@ -213,7 +214,6 @@ type
       FDataHoraTransmissao: TDateTime;
     public
       constructor Create();
-      destructor Destroy; override;
 
       procedure Assign(DeNFCeOffLineErro: TNFCeOffLineErro);
       property Chave: String read FChave write FChave;
@@ -250,8 +250,11 @@ type
     FOnEmitidasOffLine : TOnEmitidasOffLine;
     FOnNFCeOffLineErro : TOnNFCeOffLineErro;
     FOnLogOffLine : TOnLogOffLine;
-    FOnAlertaOffLine: TOnAlertaOffLine;
-    FOnBloqueioOffLine: TOnBloqueioOffLine;
+    FOnAlertaOffLine : TOnAlertaOffLine;
+    FOnBloqueioOffLine : TOnBloqueioOffLine;
+    FOnAtualizaTransmissaoOffLine : TOnAtualizaTransmissaoOffLine;
+    FOnAtualizaTransmissaoPendente : TOnAtualizaTransmissaoPendente;
+
     FAlarme: Integer;
     FBloqueio: Integer;
     FAlarmeNFCeErro: Integer;
@@ -317,6 +320,8 @@ type
     procedure DoLogOffLine;
     procedure DoAlarmeOffLine;
     procedure DoBloqueioOffLine;
+    procedure DoAtualizaTransmissaoOffLine;
+    procedure DoAtualizaTransmissaoPendente;
     procedure ChaveOnOff;
     procedure SetConfigContingencia(const AValue: TConfigContigencia);
 
@@ -336,6 +341,8 @@ type
     property OnLogOffLine: TOnLogOffLine read FOnLogOffLine write FOnLogOffLine;
     property OnAlertaOffLine : TOnAlertaOffLine read FOnAlertaOffLine write FOnAlertaOffLine;
     property OnBloqueioOffLine : TOnBloqueioOffLine read FOnBloqueioOffLine write FOnBloqueioOffLine;
+    property OnAtualizaTransmissaoOffLine : TOnAtualizaTransmissaoOffLine read FOnAtualizaTransmissaoOffLine write FOnAtualizaTransmissaoOffLine;
+    property OnAtualizaTansmissaoPendente : TOnAtualizaTransmissaoPendente read FOnAtualizaTransmissaoPendente write FOnAtualizaTransmissaoPendente;
 
   end;
 
@@ -474,6 +481,7 @@ begin
       begin
         ANFCePendente.Status := stTransmitido;
         ANFCePendente.Cancelada := True;
+        Synchronize(DoAtualizaTransmissaoPendente);
       end
       else if (ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cStat = 0) then
         ANFCePendente.Status := stNaoTransmitido
@@ -526,63 +534,59 @@ var
   J: integer;
   msgFalha: String;
 begin
-  if Assigned(FListaNFCePendentes) then
+  for J := 0 to Pred(FListaNFCePendentes.Count) do
   begin
-    for J := 0 to Pred(FListaNFCePendentes.Count) do
+    if Terminated or EOffLine then
+      Break;
+
+    msgFalha:= '';
+    if (FListaNFCePendentes[J].Status in [stNaoTransmitido, stPendente]) then
     begin
-      if Terminated or EOffLine then
-        Break;
+      ACBrNFe.NotasFiscais.Clear;
+      try
+        ACBrNFe.Consultar(FListaNFCePendentes[J].FChave);
+        FListaNFCePendentes[J].FCStat := ACBrNFe.WebServices.Consulta.cStat;
+        FListaNFCePendentes[J].FMsg := ACBrNFe.WebServices.Consulta.Msg;
+        FListaNFCePendentes[J].FDataHoraConsulta := Now;
 
-      msgFalha:= '';
-      if (FListaNFCePendentes[J].Status in [stNaoTransmitido, stPendente]) then
-      begin
-        ACBrNFe.NotasFiscais.Clear;
-        try
-          ACBrNFe.Consultar(FListaNFCePendentes[J].FChave);
-          FListaNFCePendentes[J].FCStat := ACBrNFe.WebServices.Consulta.cStat;
-          FListaNFCePendentes[J].FMsg := ACBrNFe.WebServices.Consulta.Msg;
+        if ACBrNFe.CstatConfirmada( ACBrNFe.WebServices.Consulta.cStat ) then //cStat Autorizadas
+          Cancelamento(ACBrNFe.WebServices.Consulta.Protocolo , FListaNFCePendentes[J]);
+
+        if ACBrNFe.WebServices.Consulta.cStat = 217 then  //cStat Não encontrada na SEFAZ
+          Inutilizacao(FListaNFCePendentes[J]);
+
+        RemoverXMLPendentes(J); //Remove o XML do diretório de Pendentes, apenas se foi transmitido
+
+        LogIntegracaoNFCePendentes(J); //Atualiza Log com Status de Integração de Pendentes
+        Synchronize(DoNFCePendentes);
+
+      except
+        on E: Exception do
+        begin
+          msgFalha := 'Falha ao resolver NFCe Pendente: ' + FListaNFCePendentes[J].FChave + sLineBreak + E.Message;
+
           FListaNFCePendentes[J].FDataHoraConsulta := Now;
-
-          if ACBrNFe.CstatConfirmada( ACBrNFe.WebServices.Consulta.cStat ) then //cStat Autorizadas
-            Cancelamento(ACBrNFe.WebServices.Consulta.Protocolo , FListaNFCePendentes[J]);
-
-          if ACBrNFe.WebServices.Consulta.cStat = 217 then  //cStat Não encontrada na SEFAZ
-            Inutilizacao(FListaNFCePendentes[J]);
-
-          RemoverXMLPendentes(J); //Remove o XML do diretório de Pendentes, apenas se foi transmitido
+          FListaNFCePendentes[J].FCStat := ACBrNFe.WebServices.Consulta.cStat;
+          if ACBrNFe.WebServices.Consulta.cStat = 0 then
+            FListaNFCePendentes[J].Status := stNaoTransmitido
+          else
+            FListaNFCePendentes[J].Status := stErroRejeicao;
+          FListaNFCePendentes[J].Msg:= msgFalha;
 
           LogIntegracaoNFCePendentes(J); //Atualiza Log com Status de Integração de Pendentes
           Synchronize(DoNFCePendentes);
 
-        except
-          on E: Exception do
-          begin
-            msgFalha := 'Falha ao resolver NFCe Pendente: ' + FListaNFCePendentes[J].FChave + sLineBreak + E.Message;
-
-            FListaNFCePendentes[J].FDataHoraConsulta := Now;
-            FListaNFCePendentes[J].FCStat := ACBrNFe.WebServices.Consulta.cStat;
-            if ACBrNFe.WebServices.Consulta.cStat = 0 then
-              FListaNFCePendentes[J].Status := stNaoTransmitido
-            else
-              FListaNFCePendentes[J].Status := stErroRejeicao;
-            FListaNFCePendentes[J].Msg:= msgFalha;
-
-            LogIntegracaoNFCePendentes(J); //Atualiza Log com Status de Integração de Pendentes
-            Synchronize(DoNFCePendentes);
-
-          end;
         end;
-
       end;
-    end;
 
-    if (FListaNFCePendentes.Count > 0) then
-    begin
-      //Atualiza a Lista Pendentes
-      AtualizarListaNFCePendentes;
-      Synchronize(DoNFCePendentes);
     end;
+  end;
 
+  if (FListaNFCePendentes.Count > 0) then
+  begin
+    //Atualiza a Lista Pendentes
+    AtualizarListaNFCePendentes;
+    Synchronize(DoNFCePendentes);
   end;
 
 end;
@@ -620,7 +624,6 @@ end;
 
 constructor TContingenciaNFCe.Create(AConfigNFe: TConfiguracoesNFe);
 begin
-
   inherited Create( True );
   Self.FreeOnTerminate:= True;
 
@@ -641,6 +644,8 @@ begin
   FOnLogOffLine := nil;
   FOnAlertaOffLine := nil;
   FOnBloqueioOffLine := nil;
+  FOnAtualizaTransmissaoOffLine := nil;
+  FOnAtualizaTransmissaoPendente := nil;
 
   FConfigContigencia.CarregarArquivo;
   FEOffLine := FConfigContigencia.FOffLine;
@@ -653,6 +658,10 @@ end;
 
 destructor TContingenciaNFCe.Destroy;
 begin
+  Terminate;
+  FSEvento.SetEvent;  // libera Event.WaitFor()
+  WaitFor;
+
   FListaNFCeOffLineErro.Free;
   FListaNFCePendentes.Free;
   FListaNFCeEmitidaOffLine.Free;
@@ -660,15 +669,10 @@ begin
   FACBrNFe.Free;
   FConfigContigencia.Free;
 
-
-  Terminate;
-  FSEvento.SetEvent;  // libera Event.WaitFor()
-  if not Terminated then
-    WaitFor;
-
-  FSEvento.Free;
   inherited;
-
+  // Eventos de espera devem ser liberados no final porque o destructor da trhead pode
+  //  reiniciar a trhead caso ela esteja suspensa e o acesso ao evento geraria um AV
+  FSEvento.Free;
 end;
 
 procedure TContingenciaNFCe.DoLogOffLine;
@@ -683,6 +687,35 @@ begin
     FOnAlertaOffLine(FAlarme + FAlarmeNFCeErro);
 end;
 
+procedure TContingenciaNFCe.DoAtualizaTransmissaoOffLine;
+begin
+  if Assigned(FOnAtualizaTransmissaoOffLine) then
+    if (ACBrNFe.NotasFiscais.Count > 0)
+      and ACBrNFe.CstatConfirmada( ACBrNFe.WebServices.Enviar.cStat ) then //cStat Autorizada
+        FOnAtualizaTransmissaoOffLine(OnlyNumber(ACBrNFe.NotasFiscais.Items[0].NFe.infNFe.ID)
+                                      , ACBrNFe.NotasFiscais.Items[0].XMLOriginal);
+
+end;
+
+procedure TContingenciaNFCe.DoAtualizaTransmissaoPendente;
+begin
+ if Assigned(FOnAtualizaTransmissaoPendente) then
+    if (ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Count > 0)
+      and ( ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.cStat in [135, 136, 155] ) then //cStat Autorizada
+    begin
+      FOnAtualizaTransmissaoPendente( 'C' //C - Cancelamento por Subst.
+                                      , ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.chNFe
+                                      , ACBrNFe.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.XML);
+    end
+    else if ACBrNFe.WebServices.Inutilizacao.cStat in [102] then
+    begin
+      FOnAtualizaTransmissaoPendente( 'I' //I - Inutilizado.
+                                      , OnlyNumber(ACBrNFe.WebServices.Inutilizacao.ID)
+                                      , ACBrNFe.WebServices.Inutilizacao.XML_ProcInutNFe);
+    end;
+
+end;
+
 procedure TContingenciaNFCe.DoBloqueioOffLine;
 begin
   if Assigned(FOnBloqueioOffLine) then
@@ -693,6 +726,7 @@ procedure TContingenciaNFCe.DoEmitidasOffLine;
 begin
   if Assigned(FOnEmitidasOffLine) then
     FOnEmitidasOffLine(FListaNFCeEmitidaOffLine);
+    // Verificar se seria melhor gerar uma cópia da lista para retornar ao usuário
 end;
 
 procedure TContingenciaNFCe.DoNFCeOffLineErro;
@@ -715,9 +749,9 @@ var
 begin
   inherited;
 
-  LStartTimerOffLine:= Now;
-  LStartTimerAtivarOnLine:= Now;
-  LStartTimerAlertas:= Now;
+  LStartTimerOffLine := Now;
+  LStartTimerAtivarOnLine := Now;
+  LStartTimerAlertas := Now;
 
   AtualizarEventosOffLine(True);
   while not(Self.Terminated) do
@@ -748,7 +782,7 @@ begin
     //Atualiza os Eventos
     AtualizarEventosOffLine;
 
-    //processa loop aguardando 10 segundos
+    //aguarda o tempo de "Intervalo" (padrão 10 segundos)
     FSEvento.WaitFor( FSIntervalo );
 
   end;
@@ -805,6 +839,7 @@ begin
     begin
       ANFCePendente.Status := stTransmitido;
       ANFCePendente.Inutilizada := True;
+      Synchronize(DoAtualizaTransmissaoPendente);
     end
     else if ACBrNFe.WebServices.Inutilizacao.cStat = 0 then
       ANFCePendente.Status := stNaoTransmitido
@@ -844,13 +879,13 @@ begin
   try
     for J := 0 to Pred(FListaNFCeEmitidaOffLine.Count) do
     begin
-      if Terminated then
-        Break;
-
       I := ListaNFCeEmitidaOffLineClone.Add(TNFCeEmitidaOffLine.Create);
       AEmitidasOffLineClone:= ListaNFCeEmitidaOffLineClone[I];
       AEmitidasOffLineClone.Assign(FListaNFCeEmitidaOffLine[J]);
     end;
+
+    if Terminated then
+      Exit;
 
     //Limpa Lista TNFCeEmitidaOffLine
     LimparListaNFCeEmitidaOffLine;
@@ -1001,12 +1036,13 @@ begin
   try
     for J := 0 to Pred(FListaNFCePendentes.Count) do
     begin
-      if Terminated then
-        Break;
       I := ListaNFCePendentesClone.Add(TNFCePendentes.Create);
       ANFCesPendentesClone:= ListaNFCePendentesClone[I];
       ANFCesPendentesClone.Assign(FListaNFCePendentes[J]);
     end;
+
+    if Terminated then
+      Exit;
 
     LimparListaNFCePendentes;
 
@@ -1067,8 +1103,7 @@ end;
 
 procedure TContingenciaNFCe.LimparListaNFCeEmitidaOffLine;
 begin
-  if Assigned(FListaNFCeEmitidaOffLine) then
-    FListaNFCeEmitidaOffLine.Clear;
+  FListaNFCeEmitidaOffLine.Clear;
 end;
 
 procedure TContingenciaNFCe.LimparListaNFCeOffLineErro;
@@ -1220,7 +1255,6 @@ end;
 procedure TContingenciaNFCe.ProcessarContingencia;
 begin
 
-    {$REGION 'Gerenciamento NFCe Off-Line' }
     if ( not(Terminated) and not(EOffLine) ) then
     begin
       //Popula a classe TNFCeEmitidaOffLine com as NFes Emitidas OffLine
@@ -1231,9 +1265,6 @@ begin
 
     end;
 
-    {$ENDREGION}
-
-    {$REGION 'Gerenciamento NFCe Pendentes'}
     if ( not(Terminated) and not(EOffLine) ) then
     begin
       //Popula a classe TNFCePendentes com as NFes que ficaram pendentes de consulta
@@ -1244,8 +1275,6 @@ begin
       ResolverNFCePendentes;
 
     end;
-
-    {$ENDREGION}
 
 end;
 
@@ -1293,29 +1322,50 @@ var
   J: integer;
   msgFalha: String;
 begin
-  if Assigned(FListaNFCeEmitidaOffLine) then
+  for J := 0 to Pred(FListaNFCeEmitidaOffLine.Count) do
   begin
-    for J := 0 to Pred(FListaNFCeEmitidaOffLine.Count) do
-    begin
-      if Terminated or EOffLine then
-        Break;
+    if Terminated or EOffLine then
+      Break;
 
-      msgFalha := '';
-      ACBrNFe.NotasFiscais.Clear;
-      ACBrNFe.NotasFiscais.LoadFromFile(PathWithDelim( ConfigContigencia.PathOffLine ) + FListaNFCeEmitidaOffLine[J].FChave + '-nfe.xml' );
-      try
-        ACBrNFe.Enviar(1,False,True);
+    msgFalha := '';
+    ACBrNFe.NotasFiscais.Clear;
+    ACBrNFe.NotasFiscais.LoadFromFile(PathWithDelim( ConfigContigencia.PathOffLine ) + FListaNFCeEmitidaOffLine[J].FChave + '-nfe.xml' );
+    try
+      ACBrNFe.Enviar(1,False,True);
 
-        FListaNFCeEmitidaOffLine[J].FCStat := ACBrNFe.WebServices.Enviar.cStat;
-        FListaNFCeEmitidaOffLine[J].FMsg := ACBrNFe.WebServices.Enviar.Msg;
+      FListaNFCeEmitidaOffLine[J].FCStat := ACBrNFe.WebServices.Enviar.cStat;
+      FListaNFCeEmitidaOffLine[J].FMsg := ACBrNFe.WebServices.Enviar.Msg;
+      FListaNFCeEmitidaOffLine[J].FDataHoraTransmissao := Now;
+
+      if ACBrNFe.CstatConfirmada( ACBrNFe.WebServices.Enviar.cStat ) then //cStat Autorizada
+      begin
+        FListaNFCeEmitidaOffLine[J].Status := stTransmitido;
+        RemoverXML(J); //Remove do diretório XML já transmitido
+        Synchronize(DoAtualizaTransmissaoOffLine);
+      end
+      else if ACBrNFe.WebServices.Enviar.cStat = 0 then
+      begin
+        FListaNFCeEmitidaOffLine[J].Status := stNaoTransmitido;
+        if not(EOffLine) then
+          ChaveOnOff;
+      end
+      else
+      begin
+        FListaNFCeEmitidaOffLine[J].Status := stErroRejeicao;
+        TransferirXMLcomRejeicao(J);
+      end;
+
+      LogIntegracaoOFFLine(J); //Gera log para cada processamento de envio
+      Synchronize(DoEmitidasOffLine);
+
+    Except
+      on E: Exception do
+      begin
+        msgFalha := 'Falha na transmissao NFCe: ' + FListaNFCeEmitidaOffLine[J].FChave + sLineBreak + E.Message;
+        FListaNFCeEmitidaOffLine[J].Msg:= msgFalha;
         FListaNFCeEmitidaOffLine[J].FDataHoraTransmissao := Now;
-
-        if ACBrNFe.CstatConfirmada( ACBrNFe.WebServices.Enviar.cStat ) then //cStat Autorizada
-        begin
-          FListaNFCeEmitidaOffLine[J].Status := stTransmitido;
-          RemoverXML(J); //Remove do diretório XML já transmitido
-        end
-        else if ACBrNFe.WebServices.Enviar.cStat = 0 then
+        FListaNFCeEmitidaOffLine[J].FCStat := ACBrNFe.WebServices.Enviar.cStat;
+        if ACBrNFe.WebServices.Enviar.cStat = 0 then
         begin
           FListaNFCeEmitidaOffLine[J].Status := stNaoTransmitido;
           if not(EOffLine) then
@@ -1324,47 +1374,23 @@ begin
         else
         begin
           FListaNFCeEmitidaOffLine[J].Status := stErroRejeicao;
-          TransferirXMLcomRejeicao(J);
+          TransferirXMLcomRejeicao(J);  //Copia XML para OffLine com erro (precisam ser corrigidos)
         end;
 
         LogIntegracaoOFFLine(J); //Gera log para cada processamento de envio
         Synchronize(DoEmitidasOffLine);
 
-      Except
-        on E: Exception do
-        begin
-          msgFalha := 'Falha na transmissao NFCe: ' + FListaNFCeEmitidaOffLine[J].FChave + sLineBreak + E.Message;
-          FListaNFCeEmitidaOffLine[J].Msg:= msgFalha;
-          FListaNFCeEmitidaOffLine[J].FDataHoraTransmissao := Now;
-          FListaNFCeEmitidaOffLine[J].FCStat := ACBrNFe.WebServices.Enviar.cStat;
-          if ACBrNFe.WebServices.Enviar.cStat = 0 then
-          begin
-            FListaNFCeEmitidaOffLine[J].Status := stNaoTransmitido;
-            if not(EOffLine) then
-              ChaveOnOff;
-          end
-          else
-          begin
-            FListaNFCeEmitidaOffLine[J].Status := stErroRejeicao;
-            TransferirXMLcomRejeicao(J);  //Copia XML para OffLine com erro (precisam ser corrigidos)
-          end;
-
-          LogIntegracaoOFFLine(J); //Gera log para cada processamento de envio
-          Synchronize(DoEmitidasOffLine);
-
-        end;
-
       end;
 
     end;
 
-    if (FListaNFCeEmitidaOffLine.Count > 0) then
-    begin
-      //Atualiza a lista NFes Emitidas OffLine
-      AtualizarListaNFCeOffLine;
-      Synchronize(DoEmitidasOffLine);
+  end;
 
-    end;
+  if (FListaNFCeEmitidaOffLine.Count > 0) then
+  begin
+    //Atualiza a lista NFes Emitidas OffLine
+    AtualizarListaNFCeOffLine;
+    Synchronize(DoEmitidasOffLine);
 
   end;
 
@@ -1490,16 +1516,12 @@ end;
 
 constructor TNFCeEmitidaOffLine.Create;
 begin
+  inherited;
   FChave:= '';
   FStatus:= stPendente;
   FCStat:= 0;
   FMsg:= '';
   FDataHoraTransmissao:= 0;
-end;
-
-destructor TNFCeEmitidaOffLine.Destroy;
-begin
-  inherited;
 end;
 
 { TConfigContigencia }
@@ -1529,7 +1551,7 @@ var
 begin
   ValidarNomeCaminho(False);
 
-  FS := TFileStream.Create(FNomeArquivo, fmOpenRead);
+  FS := TFileStream.Create(PathWithDelim( ExtractFilePath(ParamStr(0))) + FNomeArquivo, fmOpenRead);
   try
     CarregarArquivoMemoria(FS);
   finally
@@ -1575,7 +1597,6 @@ end;
 
 constructor TConfigContigencia.Create(ANomeArquivo: String);
 begin
-
   FOnGravarConfig := Nil;
   FNomeArquivo:= ANomeArquivo;
   FTempoTransmissaoOffLine:= CSECONDS;
@@ -1598,12 +1619,6 @@ begin
   SalvarArquivo;
 end;
 
-destructor TConfigContigencia.Destroy;
-begin
-
-  inherited;
-end;
-
 procedure TConfigContigencia.DoGravarConfig;
 begin
   if Assigned(FOnGravarConfig) then
@@ -1616,7 +1631,7 @@ var
 begin
   ValidarNomeCaminho(True);
 
-  FS := TFileStream.Create(FNomeArquivo, fmCreate or fmOpenReadWrite);
+  FS := TFileStream.Create(PathWithDelim( ExtractFilePath(ParamStr(0))) + FNomeArquivo, fmCreate or fmOpenReadWrite);
   try
     SalvarArquivoMemoria(FS);
   finally
@@ -1671,7 +1686,8 @@ begin
     raise EDFeConfigException.CreateFmt(CErrDiretorioInvalido, [APath]);
 
   if (not Salvar) and (not FileExists(FNomeArquivo)) then
-    raise EDFeConfigException.Create(CErrArqConfNaoEncontrado);
+    CriarArquivo;
+
 end;
 
 { TNFCePendentes }
@@ -1691,6 +1707,7 @@ end;
 
 constructor TNFCePendentes.Create;
 begin
+  inherited;
   FChave:= '';
   FChaveSubst := '';
   FStatus:= stPendente;
@@ -1700,12 +1717,6 @@ begin
   FCancelada:= False;
   FInutilizada:= False;
 
-end;
-
-destructor TNFCePendentes.Destroy;
-begin
-
-  inherited;
 end;
 
 { TListaNFCePendentes }
@@ -1744,16 +1755,12 @@ end;
 
 constructor TNFCeOffLineErro.Create;
 begin
+  inherited;
   FChave:= '';
   FStatus:= stErroRejeicao;
   FCStat:= 0;
   FMsg:= '';
   FDataHoraTransmissao:= 0;
-end;
-
-destructor TNFCeOffLineErro.Destroy;
-begin
-  inherited;
 end;
 
 { TListaNFCeOffLineErro }

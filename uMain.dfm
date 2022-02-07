@@ -1,9 +1,9 @@
-﻿object Form_Demo_Contingencia: TForm_Demo_Contingencia
-  Left = 0
-  Top = 0
+object Form_Demo_Contingencia: TForm_Demo_Contingencia
+  Left = 290
+  Top = 149
   Caption = 'Demo Conting'#234'ncia NFCe'
-  ClientHeight = 713
-  ClientWidth = 1124
+  ClientHeight = 705
+  ClientWidth = 1116
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@
   object pnlPrincipal: TPanel
     Left = 0
     Top = 0
-    Width = 1124
-    Height = 713
+    Width = 1116
+    Height = 705
     Align = alClient
     Color = clWhite
     ParentBackground = False
@@ -29,14 +29,14 @@
     object pnlCabecalho: TPanel
       Left = 1
       Top = 1
-      Width = 1122
+      Width = 1114
       Height = 83
       Align = alTop
       TabOrder = 1
       object lblTitulo: TLabel
         Left = 1
         Top = 33
-        Width = 1120
+        Width = 1112
         Height = 49
         Align = alClient
         Alignment = taCenter
@@ -49,22 +49,19 @@
         Font.Name = 'Lucida Console'
         Font.Pitch = fpFixed
         Font.Style = [fsBold, fsItalic]
-        Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
         Transparent = False
         Layout = tlCenter
-        ExplicitLeft = 195
-        ExplicitTop = 1
-        ExplicitWidth = 774
-        ExplicitHeight = 81
+        ExplicitWidth = 1120
       end
       object pnlAvisos: TPanel
         Left = 1
         Top = 1
-        Width = 1120
+        Width = 1112
         Height = 32
         Align = alTop
+        Color = clWindow
         TabOrder = 0
         object lblOn: TLabel
           Left = 18
@@ -83,22 +80,21 @@
     end
     object pnlRodape: TPanel
       Left = 1
-      Top = 636
-      Width = 1122
+      Top = 628
+      Width = 1114
       Height = 76
       Align = alBottom
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
+      DesignSize = (
+        1114
+        76)
       object SpeedButton2: TSpeedButton
         Left = 10
         Top = 5
         Width = 102
         Height = 69
-        Align = alCustom
-        DisabledImageIndex = 3
-        ImageIndex = 2
-        HotImageIndex = 2
         Flat = True
         Glyph.Data = {
           36140000424D3614000000000000360400002800000040000000400000000100
@@ -269,12 +265,8 @@
         Top = 5
         Width = 102
         Height = 69
-        Align = alCustom
         Anchors = [akLeft, akBottom]
         BiDiMode = bdLeftToRight
-        DisabledImageIndex = 3
-        ImageIndex = 2
-        HotImageIndex = 2
         Flat = True
         Glyph.Data = {
           36400000424D3640000000000000360000002800000040000000400000000100
@@ -799,10 +791,7 @@
         Top = 5
         Width = 102
         Height = 69
-        Align = alCustom
         Anchors = [akLeft, akBottom]
-        DisabledImageIndex = 1
-        ImageIndex = 0
         Flat = True
         Glyph.Data = {
           36140000424D3614000000000000360400002800000040000000400000000100
@@ -973,10 +962,7 @@
         Top = 5
         Width = 102
         Height = 69
-        Align = alCustom
         Anchors = [akLeft, akBottom]
-        DisabledImageIndex = 1
-        ImageIndex = 0
         Flat = True
         Glyph.Data = {
           36400000424D3640000000000000360000002800000040000000400000000100
@@ -1508,7 +1494,6 @@
         Font.Name = 'Arial Narrow'
         Font.Pitch = fpVariable
         Font.Style = [fsItalic]
-        Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
       end
@@ -1525,7 +1510,6 @@
         Font.Name = 'Arial Narrow'
         Font.Pitch = fpVariable
         Font.Style = [fsItalic]
-        Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
       end
@@ -1534,7 +1518,6 @@
         Top = 1
         Width = 8
         Height = 74
-        ExplicitLeft = 4
       end
       object Splitter2: TSplitter
         Left = 118
@@ -1554,40 +1537,104 @@
     object pnlTelaConfiguracoes: TPanel
       Left = 1
       Top = 84
-      Width = 40
-      Height = 552
+      Width = 758
+      Height = 544
       Align = alLeft
+      BevelOuter = bvNone
+      BevelWidth = 2
+      Color = clWindow
       TabOrder = 4
       object pnlMenuInferior: TPanel
-        Left = 1
-        Top = 493
-        Width = 38
+        Left = 0
+        Top = 486
+        Width = 758
         Height = 58
         Align = alBottom
+        BevelOuter = bvNone
+        Color = clWindow
         TabOrder = 1
-        object BtnGravarConfig: TButton
-          Left = 528
+        DesignSize = (
+          758
+          58)
+        object BtnGravarConfig: TBitBtn
+          Left = 518
           Top = 6
-          Width = 209
-          Height = 47
-          Caption = '  Gravar Configura'#231#245'es'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ImageIndex = 4
+          Width = 186
+          Height = 48
+          Anchors = [akRight, akBottom]
+          Caption = 'Gravar Config'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clNavy
+          Font.Height = -19
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Glyph.Data = {
+            F6060000424DF606000000000000360000002800000018000000180000000100
+            180000000000C0060000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF707070707070
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80
+            8080000000000000808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFF808080000000000000000000000000808080FFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFF808080000000000000CDCDCDCDCDCD0000000000008080
+            80FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFF808080000000000000C3C3C3FFFFFFFFFFFF
+            C3C3C3000000000000808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9E9E9E000000000000C3C3C3FF
+            FFFFFFFFFFFFFFFFFFFFFFC3C3C3000000000000808080FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2D2D
+            2DB9B9B9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC3C3C300000000000080
+            8080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFC3C3C3000000000000808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFC3C3C3000000000000808080FFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC3C3C3000000000000
+            808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFC3C3C3000000000000808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFC3C3C3000000000000707070FFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC3C3C30000006F6F
+            6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFE1E1E1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
           ParentFont = False
-          Style = bsCommandLink
           TabOrder = 0
           OnClick = BtnGravarConfigClick
         end
       end
       object PageControl4: TPageControl
-        Left = 43
-        Top = 1
-        Width = 4
-        Height = 492
+        Left = 42
+        Top = 0
+        Width = 716
+        Height = 486
         ActivePage = TabSheet3
         Align = alClient
         MultiLine = True
@@ -1704,27 +1751,6 @@
               NumGlyphs = 2
               OnClick = sbtnGetCertClick
             end
-            object sbtnNumSerie: TSpeedButton
-              Left = 205
-              Top = 154
-              Width = 23
-              Height = 24
-              Glyph.Data = {
-                76010000424D7601000000000000760000002800000020000000100000000100
-                04000000000000010000130B0000130B00001000000000000000000000000000
-                800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
-                333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
-                0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
-                07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
-                07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
-                0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
-                33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
-                B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
-                3BB33773333773333773B333333B3333333B7333333733333337}
-              NumGlyphs = 2
-              Visible = False
-            end
             object Label51: TLabel
               Left = 7
               Top = 17
@@ -1750,7 +1776,7 @@
             object edtNumSerie: TEdit
               Left = 7
               Top = 156
-              Width = 221
+              Width = 226
               Height = 21
               TabOrder = 3
             end
@@ -1798,11 +1824,15 @@
         object TabSheet4: TTabSheet
           Caption = 'Geral'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object GroupBox3: TGroupBox
             Left = 3
             Top = 12
             Width = 693
-            Height = 389
+            Height = 443
             Caption = 'Geral'
             TabOrder = 0
             object sbtnPathSalvar: TSpeedButton
@@ -1856,14 +1886,14 @@
             end
             object Label33: TLabel
               Left = 8
-              Top = 299
+              Top = 346
               Width = 184
               Height = 13
               Caption = 'IdToken/IdCSC (Somente para NFC-e)'
             end
             object Label34: TLabel
               Left = 7
-              Top = 339
+              Top = 386
               Width = 164
               Height = 13
               Caption = 'Token/CSC (Somente para NFC-e)'
@@ -1902,6 +1932,34 @@
               Width = 81
               Height = 13
               Caption = 'Numero da NFCe'
+            end
+            object Label77: TLabel
+              Left = 8
+              Top = 300
+              Width = 137
+              Height = 13
+              Caption = 'Arquivo ACBrNFeServicos.ini'
+            end
+            object spPathServicos: TSpeedButton
+              Left = 238
+              Top = 313
+              Width = 23
+              Height = 24
+              Glyph.Data = {
+                76010000424D7601000000000000760000002800000020000000100000000100
+                04000000000000010000130B0000130B00001000000000000000000000000000
+                800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+                333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+                0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+                07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+                07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+                0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+                33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+                B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+                3BB33773333773333773B333333B3333333B7333333733333337}
+              NumGlyphs = 2
+              OnClick = spPathServicosClick
             end
             object edtPathLogs: TEdit
               Left = 8
@@ -1978,14 +2036,14 @@
             end
             object edtIdToken: TEdit
               Left = 8
-              Top = 315
+              Top = 362
               Width = 248
               Height = 21
               TabOrder = 9
             end
             object edtToken: TEdit
               Left = 7
-              Top = 355
+              Top = 402
               Width = 248
               Height = 21
               TabOrder = 10
@@ -2004,11 +2062,22 @@
               Height = 21
               TabOrder = 12
             end
+            object edtPathServicos: TEdit
+              Left = 8
+              Top = 315
+              Width = 228
+              Height = 21
+              TabOrder = 13
+            end
           end
         end
         object TabSheet7: TTabSheet
           Caption = 'WebService'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object GroupBox4: TGroupBox
             Left = 10
             Top = 4
@@ -2281,6 +2350,10 @@
         object TabSheet12: TTabSheet
           Caption = 'Emitente'
           ImageIndex = 3
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label23: TLabel
             Left = 8
             Top = 4
@@ -2498,9 +2571,13 @@
         object TabSheet13: TTabSheet
           Caption = 'Arquivos'
           ImageIndex = 4
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object sbPathNFe: TSpeedButton
             Left = 247
-            Top = 131
+            Top = 163
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2521,21 +2598,21 @@
           end
           object Label48: TLabel
             Left = 6
-            Top = 116
+            Top = 148
             Width = 94
             Height = 13
             Caption = 'Pasta Arquivos NFe'
           end
           object Label49: TLabel
             Left = 6
-            Top = 154
+            Top = 186
             Width = 143
             Height = 13
             Caption = 'Pasta Arquivos Cancelamento'
           end
           object sbPathCan: TSpeedButton
             Left = 247
-            Top = 169
+            Top = 201
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2556,14 +2633,14 @@
           end
           object Label50: TLabel
             Left = 6
-            Top = 192
+            Top = 224
             Width = 198
             Height = 13
             Caption = 'Pasta Arquivos CC-e - Carta de Corre'#231#227'o'
           end
           object sbPathCCe: TSpeedButton
             Left = 247
-            Top = 207
+            Top = 239
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2584,14 +2661,14 @@
           end
           object Label53: TLabel
             Left = 6
-            Top = 230
+            Top = 262
             Width = 129
             Height = 13
             Caption = 'Pasta Arquivos Inutiliza'#231#227'o'
           end
           object sbPathInu: TSpeedButton
             Left = 247
-            Top = 245
+            Top = 277
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2612,14 +2689,14 @@
           end
           object Label54: TLabel
             Left = 6
-            Top = 268
+            Top = 300
             Width = 101
             Height = 13
             Caption = 'Pasta Arquivos DPEC'
           end
           object sbPathDPEC: TSpeedButton
             Left = 247
-            Top = 283
+            Top = 315
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2640,14 +2717,14 @@
           end
           object Label55: TLabel
             Left = 6
-            Top = 306
+            Top = 338
             Width = 109
             Height = 13
             Caption = 'Pasta Arquivos Evento'
           end
           object sbPathEvento: TSpeedButton
             Left = 247
-            Top = 321
+            Top = 353
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -2716,42 +2793,42 @@
           end
           object edtPathCCe: TEdit
             Left = 6
-            Top = 208
+            Top = 240
             Width = 235
             Height = 21
             TabOrder = 6
           end
           object edtPathNFe: TEdit
             Left = 6
-            Top = 132
+            Top = 164
             Width = 235
             Height = 21
             TabOrder = 7
           end
           object edtPathCan: TEdit
             Left = 6
-            Top = 170
+            Top = 202
             Width = 235
             Height = 21
             TabOrder = 8
           end
           object edtPathInu: TEdit
             Left = 6
-            Top = 246
+            Top = 278
             Width = 235
             Height = 21
             TabOrder = 9
           end
           object edtPathDPEC: TEdit
             Left = 6
-            Top = 284
+            Top = 316
             Width = 235
             Height = 21
             TabOrder = 10
           end
           object edtPathEvento: TEdit
             Left = 6
-            Top = 322
+            Top = 354
             Width = 235
             Height = 21
             TabOrder = 11
@@ -2764,10 +2841,22 @@
             Caption = 'Separar Arqs pelo Modelo do Documento'
             TabOrder = 12
           end
+          object cbxSalvarApenasDocumentosProcessados: TCheckBox
+            Left = 6
+            Top = 113
+            Width = 251
+            Height = 17
+            Caption = 'Salvar apenas Documentos Processados'
+            TabOrder = 13
+          end
         end
-        object Impressão: TTabSheet
-          Caption = 'Impress'#227'o'
+        object Impressao: TTabSheet
+          Caption = 'Impressao'
           ImageIndex = 5
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label56: TLabel
             Left = 8
             Top = 8
@@ -2999,6 +3088,10 @@
         object OFFLINE: TTabSheet
           Caption = 'Conting'#234'ncia'
           ImageIndex = 6
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label63: TLabel
             Left = 30
             Top = 61
@@ -3100,10 +3193,8 @@
             Top = 17
             Width = 33
             Height = 38
-            ImageIndex = 0
-            Images = ImageList1
             Flat = True
-            OnClick = SpeedButton1Click
+            OnClick = btnChaveOnLineClick
           end
           object lblLigar: TLabel
             Left = 67
@@ -3192,8 +3283,8 @@
           end
           object Panel3: TPanel
             Left = 0
-            Top = 166
-            Width = 0
+            Top = 268
+            Width = 708
             Height = 190
             Align = alBottom
             BorderStyle = bsSingle
@@ -3251,7 +3342,6 @@
               Font.Name = 'Segoe UI'
               Font.Pitch = fpVariable
               Font.Style = [fsBold]
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -3302,12 +3392,13 @@
         end
       end
       object Panel2: TPanel
-        Left = 1
-        Top = 1
+        Left = 0
+        Top = 0
         Width = 42
-        Height = 492
+        Height = 486
         Align = alLeft
         BevelOuter = bvNone
+        Color = clWindow
         TabOrder = 0
         object spbDocs: TSpeedButton
           Left = 0
@@ -3315,7 +3406,6 @@
           Width = 42
           Height = 40
           Hint = 'Documentos'
-          Align = alTop
           Flat = True
           Glyph.Data = {
             F6060000424DF606000000000000360000002800000018000000180000000100
@@ -3377,9 +3467,6 @@
           ParentShowHint = False
           ShowHint = True
           OnClick = spbDocsClick
-          ExplicitLeft = -4
-          ExplicitTop = -1
-          ExplicitWidth = 40
         end
         object spbConfig: TSpeedButton
           Left = 0
@@ -3387,7 +3474,6 @@
           Width = 42
           Height = 40
           Hint = 'Configura'#231#227'o'
-          Align = alTop
           Flat = True
           Glyph.Data = {
             F6060000424DF606000000000000360000002800000018000000180000000100
@@ -3449,22 +3535,23 @@
           ParentShowHint = False
           ShowHint = True
           OnClick = spbConfigClick
-          ExplicitTop = 8
         end
       end
     end
     object pnlTelaPDV: TPanel
-      Left = 41
+      Left = 759
       Top = 84
       Width = 716
-      Height = 552
+      Height = 544
       Align = alLeft
+      BevelOuter = bvLowered
+      Color = clWindow
       TabOrder = 0
       object PageControlPDV: TPageControl
         Left = 1
         Top = 1
         Width = 714
-        Height = 550
+        Height = 542
         ActivePage = tsVenda
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -3479,14 +3566,12 @@
         OnChange = PageControlPDVChange
         object tsVenda: TTabSheet
           Caption = 'Venda'
-          DoubleBuffered = False
           ImageIndex = 1
-          ParentDoubleBuffered = False
           object pnlVenda: TPanel
             Left = 0
             Top = 0
             Width = 706
-            Height = 519
+            Height = 511
             Align = alClient
             Color = clWhite
             ParentBackground = False
@@ -3494,130 +3579,123 @@
             OnEnter = pnlVendaEnter
             DesignSize = (
               706
-              519)
+              511)
             object Label9: TLabel
               Left = 496
-              Top = 329
+              Top = 321
               Width = 125
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'Total da Venda'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 284
+              ExplicitTop = 329
             end
             object Label10: TLabel
               Left = 25
-              Top = 146
+              Top = 138
               Width = 102
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'C'#243'digo (F9)'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 197
+              ExplicitTop = 146
             end
             object Label11: TLabel
               Left = 262
-              Top = 147
+              Top = 139
               Width = 42
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'Qtde'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 198
+              ExplicitTop = 147
             end
             object Label12: TLabel
               Left = 400
-              Top = 146
+              Top = 138
               Width = 119
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'Pre'#231'o Unit'#225'rio'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 197
+              ExplicitTop = 146
             end
             object Label13: TLabel
               Left = 565
-              Top = 146
+              Top = 138
               Width = 83
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'Total Item'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 197
+              ExplicitTop = 146
             end
             object Label2: TLabel
               Left = 25
-              Top = 227
+              Top = 219
               Width = 38
               Height = 22
               Anchors = [akLeft, akBottom]
               Caption = 'Item'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
-              ExplicitTop = 278
+              ExplicitTop = 227
             end
             object edtTotalVenda1: TEdit
               Left = 496
-              Top = 357
+              Top = 349
               Width = 193
               Height = 59
               TabStop = False
-              Align = alCustom
-              Alignment = taRightJustify
               Anchors = [akLeft, akBottom]
+              BiDiMode = bdLeftToRight
               BorderStyle = bsNone
               Color = clBtnFace
               Font.Charset = ANSI_CHARSET
@@ -3626,8 +3704,7 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
+              ParentBiDiMode = False
               ParentFont = False
               ReadOnly = True
               TabOrder = 7
@@ -3637,10 +3714,9 @@
               Left = 23
               Top = 14
               Width = 666
-              Height = 125
+              Height = 117
               Anchors = [akLeft, akTop, akRight, akBottom]
               DataSource = dsProdutos
-              Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
               ReadOnly = True
               TabOrder = 8
               TitleFont.Charset = DEFAULT_CHARSET
@@ -3651,11 +3727,10 @@
             end
             object edtTotalItem: TEdit
               Left = 563
-              Top = 175
+              Top = 167
               Width = 126
               Height = 38
               TabStop = False
-              Alignment = taRightJustify
               Anchors = [akLeft, akBottom]
               BorderStyle = bsNone
               Color = clBtnFace
@@ -3665,8 +3740,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 3
@@ -3674,11 +3747,10 @@
             end
             object edtPrecoUnitario: TEdit
               Left = 400
-              Top = 175
+              Top = 167
               Width = 145
               Height = 38
               TabStop = False
-              Alignment = taRightJustify
               Anchors = [akLeft, akBottom]
               BorderStyle = bsNone
               Color = clBtnFace
@@ -3688,8 +3760,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 2
@@ -3697,11 +3767,10 @@
             end
             object edtQtde: TEdit
               Left = 262
-              Top = 175
+              Top = 167
               Width = 124
               Height = 38
               Hint = '"F9" para Balan'#231'a'
-              Alignment = taCenter
               Anchors = [akLeft, akBottom]
               BorderStyle = bsNone
               CharCase = ecUpperCase
@@ -3712,7 +3781,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               ParentShowHint = False
               ShowHint = True
@@ -3725,10 +3793,9 @@
             end
             object edtCodigo: TEdit
               Left = 23
-              Top = 175
+              Top = 167
               Width = 222
               Height = 38
-              Alignment = taCenter
               Anchors = [akLeft, akBottom]
               BorderStyle = bsNone
               CharCase = ecUpperCase
@@ -3739,7 +3806,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               TabOrder = 0
               OnEnter = edtCodigoEnter
@@ -3748,11 +3814,10 @@
             end
             object edtDescricao: TEdit
               Left = 23
-              Top = 255
+              Top = 247
               Width = 666
               Height = 41
               TabStop = False
-              Alignment = taCenter
               Anchors = [akLeft, akBottom]
               AutoSize = False
               BorderStyle = bsNone
@@ -3763,15 +3828,13 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 4
             end
             object btnCancelaRegistro: TBitBtn
               Left = 289
-              Top = 452
+              Top = 444
               Width = 201
               Height = 57
               Anchors = [akRight, akBottom]
@@ -3781,7 +3844,6 @@
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Style = [fsBold]
-              Font.Quality = fqClearTypeNatural
               Glyph.Data = {
                 36100000424D3610000000000000360000002800000020000000200000000100
                 2000000000000010000064000000640000000000000000000000FFFFFFFFFFFF
@@ -3919,7 +3981,7 @@
             end
             object btnRegistraVenda: TBitBtn
               Left = 496
-              Top = 452
+              Top = 444
               Width = 201
               Height = 57
               Anchors = [akRight, akBottom]
@@ -3929,7 +3991,6 @@
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Style = [fsBold]
-              Font.Quality = fqClearTypeNatural
               Glyph.Data = {
                 36100000424D3610000000000000360000002800000020000000200000000100
                 2000000000000010000064000000640000000000000000000000FFFFFFFFFFFF
@@ -4071,32 +4132,35 @@
           Caption = 'Pagamento'
           ImageIndex = 1
           OnShow = tsPagamentoShow
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object pnlPagamento: TPanel
             Left = 0
             Top = 0
             Width = 706
-            Height = 519
+            Height = 511
             Align = alClient
             Color = clWindow
             ParentBackground = False
             TabOrder = 0
             DesignSize = (
               706
-              519)
+              511)
             object Label14: TLabel
               Left = 36
               Top = 49
               Width = 125
               Height = 22
               Caption = 'Total da Venda'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4106,14 +4170,13 @@
               Width = 196
               Height = 22
               Caption = 'Pagamento / Opera'#231#227'o'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4123,14 +4186,13 @@
               Width = 43
               Height = 22
               Caption = 'Valor'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4140,14 +4202,13 @@
               Width = 131
               Height = 22
               Caption = 'A Pagar / Troco'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4157,7 +4218,6 @@
               Width = 211
               Height = 59
               TabStop = False
-              Alignment = taRightJustify
               BorderStyle = bsNone
               Color = clBtnFace
               Font.Charset = ANSI_CHARSET
@@ -4166,8 +4226,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 2
@@ -4179,7 +4237,6 @@
               Width = 249
               Height = 38
               TabStop = False
-              Alignment = taCenter
               BorderStyle = bsNone
               Color = clBtnFace
               Font.Charset = ANSI_CHARSET
@@ -4188,8 +4245,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 3
@@ -4200,7 +4255,6 @@
               Top = 285
               Width = 193
               Height = 38
-              Alignment = taRightJustify
               BorderStyle = bsNone
               CharCase = ecUpperCase
               Color = clInactiveBorder
@@ -4210,7 +4264,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               TabOrder = 0
               Text = '0,00'
@@ -4224,7 +4277,6 @@
               Width = 207
               Height = 38
               TabStop = False
-              Alignment = taRightJustify
               AutoSelect = False
               BorderStyle = bsNone
               CharCase = ecUpperCase
@@ -4235,8 +4287,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
-              NumbersOnly = True
               ParentFont = False
               ReadOnly = True
               TabOrder = 4
@@ -4245,7 +4295,7 @@
             end
             object btnPagar: TBitBtn
               Left = 496
-              Top = 452
+              Top = 444
               Width = 201
               Height = 57
               Anchors = [akRight, akBottom]
@@ -4396,32 +4446,35 @@
           Caption = 'Emitir'
           ImageIndex = 2
           OnShow = tsFinalizaShow
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object pnlFinaliza: TPanel
             Left = 0
             Top = 0
             Width = 706
-            Height = 519
+            Height = 511
             Align = alClient
             Color = clWhite
             ParentBackground = False
             TabOrder = 0
             DesignSize = (
               706
-              519)
+              511)
             object Label15: TLabel
               Left = 28
               Top = 41
               Width = 125
               Height = 22
               Caption = 'Total da Venda'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4431,14 +4484,13 @@
               Width = 90
               Height = 22
               Caption = 'Total Pago'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4448,14 +4500,13 @@
               Width = 49
               Height = 22
               Caption = 'Troco'
-              Color = clBtnFace
+              Color = clWindow
               Font.Charset = ANSI_CHARSET
               Font.Color = clGray
               Font.Height = -19
               Font.Name = 'Arial'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentColor = False
               ParentFont = False
             end
@@ -4465,7 +4516,6 @@
               Width = 211
               Height = 59
               TabStop = False
-              Alignment = taRightJustify
               BorderStyle = bsNone
               Color = clBtnFace
               Font.Charset = ANSI_CHARSET
@@ -4474,7 +4524,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               ReadOnly = True
               TabOrder = 1
@@ -4486,7 +4535,6 @@
               Width = 211
               Height = 59
               TabStop = False
-              Alignment = taRightJustify
               BorderStyle = bsNone
               Color = clBtnFace
               Font.Charset = ANSI_CHARSET
@@ -4495,7 +4543,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               ReadOnly = True
               TabOrder = 2
@@ -4507,7 +4554,6 @@
               Width = 211
               Height = 59
               TabStop = False
-              Alignment = taRightJustify
               BorderStyle = bsNone
               Color = 8454143
               Font.Charset = ANSI_CHARSET
@@ -4516,7 +4562,6 @@
               Font.Name = 'Verdana'
               Font.Pitch = fpVariable
               Font.Style = []
-              Font.Quality = fqDraft
               ParentFont = False
               ReadOnly = True
               TabOrder = 3
@@ -4524,7 +4569,7 @@
             end
             object btnEmitir: TBitBtn
               Left = 494
-              Top = 450
+              Top = 442
               Width = 201
               Height = 57
               Anchors = [akRight, akBottom]
@@ -4674,10 +4719,10 @@
       end
     end
     object pnlTelaLog: TPanel
-      Left = 772
+      Left = 764
       Top = 84
       Width = 351
-      Height = 552
+      Height = 544
       Align = alRight
       Anchors = [akLeft, akTop, akRight, akBottom]
       TabOrder = 3
@@ -4689,14 +4734,13 @@
         Align = alTop
         Alignment = taCenter
         Caption = 'Log'
-        Color = clBtnFace
+        Color = clWindow
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -16
         Font.Name = 'Arial'
         Font.Pitch = fpVariable
         Font.Style = [fsBold]
-        Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
         ExplicitWidth = 30
@@ -4709,14 +4753,13 @@
         Align = alTop
         Alignment = taCenter
         Caption = 'Avisos'
-        Color = clBtnFace
+        Color = clWindow
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -16
         Font.Name = 'Arial'
         Font.Pitch = fpVariable
         Font.Style = [fsBold]
-        Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
         ExplicitWidth = 51
@@ -4725,7 +4768,7 @@
         Left = 1
         Top = 168
         Width = 349
-        Height = 383
+        Height = 375
         Align = alClient
         Color = clCream
         Font.Charset = DEFAULT_CHARSET
@@ -4766,7 +4809,6 @@
   object cdsProdutos: TClientDataSet
     Aggregates = <>
     AutoCalcFields = False
-    FieldOptions.PositionMode = poFieldNo
     Params = <>
     Left = 825
     Top = 25

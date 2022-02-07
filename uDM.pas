@@ -30,14 +30,16 @@
 {       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
 {******************************************************************************}
 
+{$I ACBr.inc}
+
 unit uDM;
 
 interface
 
 uses
-  System.SysUtils, System.Classes, ACBrPosPrinter, ACBrDFeReport,
+  SysUtils, Classes, ACBrPosPrinter, ACBrDFeReport,
   ACBrDFeDANFeReport, ACBrNFeDANFEClass, ACBrDANFCeFortesFr, ACBrBase, ACBrDFe,
-  ACBrNFe, uContingenciaNFCe, Data.DB, Datasnap.DBClient;
+  ACBrNFe, uContingenciaNFCe, DB, DBClient;
 
 type
 
@@ -69,8 +71,8 @@ type
     cdsOffLineData_HoraTransmissao: TDateTimeField;
     cdsOffLineMsg: TStringField;
     dsOffLine: TDataSource;
-    procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
     FContingenciaNFCe: TContingenciaNFCe;
@@ -91,8 +93,14 @@ implementation
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
+  // Instancia a Thread TContingenciaNFCe, passando as configurações do ACBrNFe
   FContingenciaNFCe := TContingenciaNFCe.Create(ACBrNFe1.Configuracoes);
-  FContingenciaNFCe.Start;
+  {$IFDEF DELPHIXE_UP}
+     FContingenciaNFCe.Start;
+  {$Else}
+     FContingenciaNFCe.Resume;
+  {$EndIf}
+
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);

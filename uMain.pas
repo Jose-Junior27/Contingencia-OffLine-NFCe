@@ -34,15 +34,13 @@ unit uMain;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.StrUtils, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Buttons, Vcl.StdCtrls,
-  Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient,
-  Vcl.Imaging.pngimage, System.ImageList, Vcl.ImgList, Datasnap.Provider,
+  Windows, Messages, SysUtils, Variants, Classes, StrUtils, Graphics,
+  Controls, Forms, Dialogs, ExtCtrls, Buttons, StdCtrls,
+  ComCtrls, DB, Grids, DBGrids, DBClient, Provider,
   ACBrDFeReport, ACBrDFeDANFeReport, ACBrNFeDANFEClass, ACBrDANFCeFortesFr,
   ACBrBase, ACBrDFe, ACBrNFe, pcnConversao, ACBrDFeUtil, pcnConversaoNFe,
-  uContingenciaNFCe, ACBrUtil, Vcl.Samples.Spin, ACBrPosPrinter,
-  Vcl.BaseImageCollection, Vcl.ImageCollection,
-  uDM, ACBrEnterTab;
+  uContingenciaNFCe, ACBrUtil, Spin, ACBrPosPrinter,
+  uDM, ACBrEnterTab, ImgList, System.ImageList;
 
 const
   //CErrorContingencia: array[0..6] of String = ( '10060', '12002', '12006', '12007', '12029', '12030', '16006' );
@@ -129,7 +127,6 @@ type
     sbtnCaminhoCert: TSpeedButton;
     Label5: TLabel;
     sbtnGetCert: TSpeedButton;
-    sbtnNumSerie: TSpeedButton;
     Label51: TLabel;
     edtCaminho: TEdit;
     edtSenha: TEdit;
@@ -247,7 +244,7 @@ type
     cbxSepararPorModelo: TCheckBox;
     Panel2: TPanel;
     spbDocs: TSpeedButton;
-    Impressão: TTabSheet;
+    Impressao: TTabSheet;
     Label56: TLabel;
     edtLogoMarca: TEdit;
     sbtnLogoMarca: TSpeedButton;
@@ -300,7 +297,6 @@ type
     edtNumNFCe: TEdit;
     Label76: TLabel;
     ACBrEnterTab1: TACBrEnterTab;
-    BtnGravarConfig: TButton;
     ckOffLineComErro: TCheckBox;
     ckGravarLog: TCheckBox;
     spbConfig: TSpeedButton;
@@ -308,6 +304,11 @@ type
     pnlAvisos: TPanel;
     lblOn: TLabel;
     Label74: TLabel;
+    BtnGravarConfig: TBitBtn;
+    cbxSalvarApenasDocumentosProcessados: TCheckBox;
+    Label77: TLabel;
+    edtPathServicos: TEdit;
+    spPathServicos: TSpeedButton;
     procedure PathClick(Sender: TObject);
     procedure spbVoltarClick(Sender: TObject);
     procedure spbProximoClick(Sender: TObject);
@@ -346,13 +347,13 @@ type
     procedure btnChaveOnLineClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure spbConfigClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
     procedure spbPathOffErroClick(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure BtnGravarConfigClick(Sender: TObject);
     procedure spbDocsClick(Sender: TObject);
+    procedure spPathServicosClick(Sender: TObject);
 
   private
 
@@ -398,6 +399,8 @@ type
     procedure EventLogOffLine(ALogOff: String);
     procedure EventAlertaOffLine(AAlerta: Integer);
     procedure EventBloqueioOffLine(ABloq: Integer);
+    procedure EventAtualizaTransmissaoOffLine(AChave, AXML: String);
+    procedure EventAtualizaTransmissaoPendente(ATipoDoc: Char; AChave, AXML: String);
 
   public
     { Public declarations }
@@ -810,7 +813,8 @@ begin
   if DM.ContingenciaNFCe.EOffLine then
   begin
     lblLigar.Caption:= 'NFCe OFF';
-    btnChaveOnLine.ImageIndex := 1;
+    btnChaveOnLine.Glyph.Assign(nil);
+    ImageList1.GetBitmap(1, btnChaveOnLine.Glyph);
     lblOn.Caption := 'NFCe OFF';
     lblOn.Font.Color := clRed;
 
@@ -818,7 +822,8 @@ begin
   else
   begin
     lblLigar.Caption:= 'NFCe ON';
-    btnChaveOnLine.ImageIndex := 0;
+    btnChaveOnLine.Glyph.Assign(nil);
+    ImageList1.GetBitmap(0, btnChaveOnLine.Glyph);
     lblOn.Caption := 'NFCe ON';
     lblOn.Font.Color := clGreen;
 
@@ -984,7 +989,6 @@ end;
 procedure TForm_Demo_Contingencia.ConfigurarComponente(ACBrNFe: TACBrNFe);
 var
   Ok: Boolean;
-  PathMensal: string;
 begin
   ACBrNFe.Configuracoes.Certificados.URLPFX      := edtURLPFX.Text;
   ACBrNFe.Configuracoes.Certificados.ArquivoPFX  := edtCaminho.Text;
@@ -1048,6 +1052,7 @@ begin
     ProxyPort := edtProxyPorta.Text;
     ProxyUser := edtProxyUser.Text;
     ProxyPass := edtProxySenha.Text;
+
   end;
 
   ACBrNFe.SSL.SSLType := TSSLType(cbSSLType.ItemIndex);
@@ -1065,21 +1070,25 @@ begin
     PathNFe          := edtPathNFe.Text;
     PathInu          := edtPathInu.Text;
     PathEvento       := edtPathEvento.Text;
-    PathMensal       := GetPathNFe(0);
-    PathSalvar       := PathMensal;
+    PathSalvar       := edtPathLogs.Text;
+    SalvarApenasNFeProcessadas := cbxSalvarApenasDocumentosProcessados.Checked;
+    IniServicos      := edtPathServicos.Text;
   end;
 
   if ACBrNFe.DANFE <> nil then
   begin
     ACBrNFe.DANFE.TipoDANFE := StrToTpImp(OK, IntToStr(rgTipoDanfe.ItemIndex + 1));
     ACBrNFe.DANFE.Logo      := edtLogoMarca.Text;
-    ACBrNFe.DANFE.PathPDF   := PathMensal;
+    ACBrNFe.DANFE.PathPDF   := ACBrNFe.Configuracoes.Arquivos.GetPathNFe(0);
 
     ACBrNFe.DANFE.MargemDireita  := 7;
     ACBrNFe.DANFE.MargemEsquerda := 7;
     ACBrNFe.DANFE.MargemSuperior := 5;
     ACBrNFe.DANFE.MargemInferior := 5;
   end;
+
+  //Atualiza as Configurações do componente ACBrNFe também na classe ContingênciaNFCe
+  Dm.ContingenciaNFCe.ACBrNFe.Configuracoes.Assign(ACBrNFe.Configuracoes);
 end;
 
 procedure TForm_Demo_Contingencia.edtAPagarTrocoChange(Sender: TObject);
@@ -1173,14 +1182,18 @@ begin
       DM.ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.dhCont:= now;
       DM.ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.xJust:= CJustificaOffLine;
 
+      { Grava o XML Gerado como OffLine para posterior envio
+        Deve gravar também no Banco de Dados}
+      DM.ACBrNFe1.NotasFiscais.Items[0].NomeArq := ''; //Isso limpa o path para gravar o XML assinado, utilizando o path das configurações
       DM.ACBrNFe1.NotasFiscais.Assinar;
-      Result:= DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML('',PathWithDelim( ExtractFilePath(ParamStr(0)) ) + COFFLINE);
+      Result:= DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML('',DM.ContingenciaNFCe.ConfigContigencia.PathOffLine);   //Grava o XML na pasta de OffLine
 
       //Emite OffLine em 2 vias
-      DM.ACBrNFe1.NotasFiscais.Items[0].Imprimir;
       DM.ACBrNFeDANFCeFortes1.ViaConsumidor:= True;
       DM.ACBrNFe1.NotasFiscais.Items[0].Imprimir;
+
       DM.ACBrNFeDANFCeFortes1.ViaConsumidor:= False;
+      DM.ACBrNFe1.NotasFiscais.Items[0].Imprimir;
 
       Log('NFCe EMITIDA OFF-LINE', 'arquivo: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NomeArq +#13#10
                                   +'chave: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NumID);
@@ -1216,17 +1229,24 @@ end;
 function TForm_Demo_Contingencia.EnviarNFCe: Boolean;
 var
  vNFe: Integer;
+ vArqNFe: String;
 begin
   vNFe := IncrementarNFCe;
 
   DM.ACBrNFe1.NotasFiscais.Clear;
   DM.ACBrNFe1.Tag:= 0;
   AlimentarNFCe(vNFe);
+  vArqNFe := PathWithDelim(Dm.ACBrNFe1.Configuracoes.Arquivos.PathSalvar) +
+              OnlyNumber(Dm.ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID) + '-nfe.xml';
 
   if not(DM.ContingenciaNFCe.EOffLine) then
   begin
-    DM.ACBrNFe1.NotasFiscais.Assinar;
-    DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML();
+
+    { Grava o XML Gerado antes do envio
+      Deve gravar também no Banco de Dados}
+    DM.ACBrNFe1.NotasFiscais.Items[0].NomeArq := ''; //Isso limpa o path para gravar o XML assinado utilizando o path das configurações
+    DM.ACBrNFe1.NotasFiscais.Items[0].Assinar;
+    DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML(vArqNFe);
 
     Log('NFCe GERADA', 'arquivo: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NomeArq +#13#10
                       +'chave: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NumID);
@@ -1271,14 +1291,27 @@ begin
   else
     MenInfOffLine.Lines.Strings[4]:= ' ';
 
-  {lblAlerta.Visible := False;
-  if (AAlerta > 0) then
-  begin
-    lblAlerta.Font.Color:= clOlive;
-    lblAlerta.Caption:= '<< ALERTA >> [ '+IntToStr(AAlerta)+ ' documento(s) emitido(s) Off-Line NÃO transmitido(s) no prazo! ]';
-    lblAlerta.Visible := true;
-  end;  }
+end;
 
+procedure TForm_Demo_Contingencia.EventAtualizaTransmissaoOffLine(AChave, AXML: String);
+begin
+  { Utilize esse evento para Atualizar o Banco de Dados com
+    Protocolo de Autorizaçao do XML OffLine transmitido}
+
+  Log('Update XML OffLine Transmitido','Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
+
+end;
+
+procedure TForm_Demo_Contingencia.EventAtualizaTransmissaoPendente(
+  ATipoDoc: Char; AChave, AXML: String);
+begin
+ { Utilize esse evento para Atualizar o Banco de Dados com
+    XML de Cancelamento por Subst. ou Inutilização da Chave Pendente.}
+
+ //ATipoDoc  I- Inutilizado   C- Cancelado
+
+  Log('Update XML Cancelamento por Subst. ou Inutilização  Transmitido','Tipo Doc: '+ ATipoDoc + #13#10
+      +'Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
 end;
 
 procedure TForm_Demo_Contingencia.EventBloqueioOffLine(ABloq: Integer);
@@ -1288,18 +1321,11 @@ begin
   else
     MenInfOffLine.Lines.Strings[5]:= ' ';
 
-  {if (ABloq > 0) then
-  begin
-    lblAlerta.Font.Color:= clMaroon;
-    lblAlerta.Caption:= '<< BLOQUEIO >> [ '+IntToStr(ABloq)+ ' documento(s) emitido(s) Off-Line NÃO transmitido(s) no prazo! ]';
-    lblAlerta.Visible := true;
-  end; }
-
 end;
 
 procedure TForm_Demo_Contingencia.EventLogOffLine(ALogOff: String);
 begin
-  if not(ALogOff.IsEmpty) then
+  if not(EstaVazio( ALogOff ) ) then
     memoLog.Lines.Add(ALogOff);
 
 end;
@@ -1329,7 +1355,11 @@ var
   O: TACBrPosPaginaCodigo;
 begin
 
+  // Atualiza evento On TransmitError, para sinalizar quando houver falha de Comunicação
   DM.ACBrNFe1.OnTransmitError:= EventNFeTransmitError;
+
+  { Aqui dever ser referenciado os eventos da classe ContingênciaNFCe com as procedures
+    responsáveis por atualizar o processamento da Contingência na aplicação. }
   if Assigned(DM.ContingenciaNFCe) then
   begin
     DM.ContingenciaNFCe.OnLogOffLine := EventLogOffLine;
@@ -1338,11 +1368,16 @@ begin
     DM.ContingenciaNFCe.OnNFCeOffLineErro := EventNFCeOffLineErro;
     DM.ContingenciaNFCe.OnAlertaOffLine := EventAlertaOffLine;
     DM.ContingenciaNFCe.OnBloqueioOffLine := EventBloqueioOffLine;
+    DM.ContingenciaNFCe.OnAtualizaTransmissaoOffLine := EventAtualizaTransmissaoOffLine;
+    DM.ContingenciaNFCe.OnAtualizaTansmissaoPendente := EventAtualizaTransmissaoPendente;
   end;
 
+  { Verifica se a classe está com OFFLine, se sim muda a chave para
+    sempre iniciar aplicação como ONLine }
   if DM.ContingenciaNFCe.EOffLine then
     DM.ContingenciaNFCe.ChaveOnOff;
 
+  //Atualiza as Configurações da Contingência em tela
   AtualizarTelaConfiguracaoContingencia;
 
   pageControlPDV.ActivePageIndex:= 0;
@@ -1420,6 +1455,7 @@ begin
   cbxPorta.Items.Add('/tmp/ecf.txt') ;
   {$EndIf}
 
+  //Lê as configurações para o componente ACBrNFe e atualiza também na classe ContingenciaNFCe
   LerConfiguracao;
 
   PageControl4.ActivePageIndex := 0;
@@ -1486,6 +1522,7 @@ begin
     Ini.WriteString( 'Geral', 'PathSalvar',       edtPathLogs.Text);
     Ini.WriteString( 'Geral', 'PathSchemas',      edtPathSchemas.Text);
     Ini.WriteString( 'Geral', 'NumeroNFCe',       edtNumNFCe.Text);
+    Ini.WriteString( 'Geral', 'IniServicos',      edtPathServicos.Text);
 
     Ini.WriteString( 'WebService', 'UF',         cbUF.Text);
     Ini.WriteInteger('WebService', 'Ambiente',   rgTipoAmb.ItemIndex);
@@ -1510,6 +1547,7 @@ begin
     Ini.WriteBool(  'Arquivos', 'SalvarPathEvento', cbxSalvaPathEvento.Checked);
     Ini.WriteBool(  'Arquivos', 'SepararPorCNPJ',   cbxSepararPorCNPJ.Checked);
     Ini.WriteBool(  'Arquivos', 'SepararPorModelo', cbxSepararPorModelo.Checked);
+    Ini.WriteBool(  'Arquivos', 'SalvarApenasNFeProcessadas', cbxSalvarApenasDocumentosProcessados.Checked);
     Ini.WriteString('Arquivos', 'PathNFe',          edtPathNFe.Text);
     Ini.WriteString('Arquivos', 'PathCan',          edtPathCan.Text);
     Ini.WriteString('Arquivos', 'PathInu',          edtPathInu.Text);
@@ -1563,7 +1601,7 @@ begin
       (DM.ContingenciaNFCe.EContingenciaAutomatica) then
     begin
       //Grava o XML sem retorno na pasta Pendentes
-      Result:= DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML('',PathWithDelim( ExtractFilePath(ParamStr(0)) ) + CPENDENTES);
+      Result:= DM.ACBrNFe1.NotasFiscais.Items[0].GravarXML('',DM.ContingenciaNFCe.ConfigContigencia.PathNFCePendentes);
 
       Log('NFCe COM RETORNO PENDENTE', 'arquivo: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NomeArq +#13#10
                                       +'chave: ' + DM.ACBrNFe1.NotasFiscais.Items[0].NumID);
@@ -1664,6 +1702,7 @@ begin
     edtPathLogs.Text          := Ini.ReadString( 'Geral', 'PathSalvar',     PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs');
     edtPathSchemas.Text       := Ini.ReadString( 'Geral', 'PathSchemas',    PathWithDelim(ExtractFilePath(Application.ExeName))+'Schemas\'+GetEnumName(TypeInfo(TpcnVersaoDF), integer(cbVersaoDF.ItemIndex) ));
     edtNumNFCe.Text           := Ini.ReadString( 'Geral', 'NumeroNFCe', '0');
+    edtPathServicos.Text      := Ini.ReadString( 'Geral', 'IniServicos', '');
 
     cbUF.ItemIndex := cbUF.Items.IndexOf(Ini.ReadString('WebService', 'UF', 'SP'));
 
@@ -1695,6 +1734,7 @@ begin
     edtPathDPEC.Text            := Ini.ReadString('Arquivos', 'PathDPEC',         '');
     edtPathCCe.Text             := Ini.ReadString('Arquivos', 'PathCCe',          '');
     edtPathEvento.Text          := Ini.ReadString('Arquivos', 'PathEvento',       '');
+    cbxSalvarApenasDocumentosProcessados.Checked := Ini.ReadBool(  'Arquivos', 'SalvarApenasNFeProcessadas', false);
 
     edtEmitCNPJ.Text       := Ini.ReadString('Emitente', 'CNPJ',        '');
     edtEmitIE.Text         := Ini.ReadString('Emitente', 'IE',          '');
@@ -1929,13 +1969,22 @@ procedure TForm_Demo_Contingencia.PathClick(Sender: TObject);
 var
   Dir: string;
 begin
+
   if Length(TEdit(Sender).Text) <= 0 then
-     Dir := ApplicationPath
+    Dir := ExtractFileDir(application.ExeName)
   else
-     Dir := TEdit(Sender).Text;
+  begin
+    Dir := TEdit(Sender).Text;
+    if Dir = '' then
+      Dir := ExtractFileDir(application.ExeName)
+    else if not DirectoryExists(Dir) then
+      Dir := ExtractFileDir(Dir);
+  end;
 
   if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
+  if NaoEstaVazio(Dir) then
     TEdit(Sender).Text := Dir;
+
 end;
 
 procedure TForm_Demo_Contingencia.pnlVendaEnter(Sender: TObject);
@@ -2111,16 +2160,23 @@ begin
   setBackPage(pageControlPDV);
 end;
 
-procedure TForm_Demo_Contingencia.SpeedButton1Click(Sender: TObject);
-begin
-  DM.ContingenciaNFCe.ChaveOnOff;
-  BotaoLigaOffLine;  //Atualiza botão liga e desliga Off-Line
-
-end;
-
 procedure TForm_Demo_Contingencia.spPathSchemasClick(Sender: TObject);
 begin
   PathClick(edtPathSchemas);
+end;
+
+procedure TForm_Demo_Contingencia.spPathServicosClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione o arquivo';
+  OpenDialog1.DefaultExt := '*.ini';
+  OpenDialog1.Filter :=
+    'Arquivos INI (*.ini)|*.ini|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
+  if OpenDialog1.Execute then
+  begin
+    edtPathServicos.Text := OpenDialog1.FileName;
+  end;
+
 end;
 
 procedure TForm_Demo_Contingencia.tsFinalizaShow(Sender: TObject);

@@ -1,7 +1,7 @@
 program Project_Contingencia_NFCe;
 
 uses
-  Vcl.Forms,
+  Forms,
   uMain in 'uMain.pas' {Form_Demo_Contingencia},
   uContingenciaNFCe in 'uContingenciaNFCe.pas',
   uDM in 'uDM.pas' {DM: TDataModule},
@@ -12,7 +12,7 @@ uses
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  //Application.MainFormOnTaskbar := True;  //incompativel com D7
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TForm_Demo_Contingencia, Form_Demo_Contingencia);
   Application.CreateForm(TfrmDocumentos, frmDocumentos);
