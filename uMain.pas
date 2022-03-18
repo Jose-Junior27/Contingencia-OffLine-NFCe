@@ -1298,7 +1298,7 @@ begin
   { Utilize esse evento para Atualizar o Banco de Dados com
     Protocolo de Autorizaçao do XML OffLine transmitido}
 
-  Log('Update XML OffLine Transmitido','Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
+  //Log('Update XML OffLine Transmitido','Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
 
 end;
 
@@ -1310,8 +1310,8 @@ begin
 
  //ATipoDoc  I- Inutilizado   C- Cancelado
 
-  Log('Update XML Cancelamento por Subst. ou Inutilização  Transmitido','Tipo Doc: '+ ATipoDoc + #13#10
-      +'Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
+  //Log('Update XML Cancelamento por Subst. ou Inutilização  Transmitido','Tipo Doc: '+ ATipoDoc + #13#10
+    //  +'Chave: '+ AChave + #13#10 + 'XML: '+ AXML);
 end;
 
 procedure TForm_Demo_Contingencia.EventBloqueioOffLine(ABloq: Integer);
