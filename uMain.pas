@@ -40,7 +40,7 @@ uses
   ACBrDFeReport, ACBrDFeDANFeReport, ACBrNFeDANFEClass, ACBrDANFCeFortesFr,
   ACBrBase, ACBrDFe, ACBrNFe, pcnConversao, ACBrDFeUtil, pcnConversaoNFe,
   uContingenciaNFCe, ACBrUtil, Spin, ACBrPosPrinter,
-  uDM, ACBrEnterTab, ImgList, System.ImageList;
+  uDM, ACBrEnterTab, ImgList;
 
 const
   //CErrorContingencia: array[0..6] of String = ( '10060', '12002', '12006', '12007', '12029', '12030', '16006' );

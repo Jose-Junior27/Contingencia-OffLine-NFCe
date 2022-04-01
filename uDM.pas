@@ -71,8 +71,8 @@ type
     cdsOffLineData_HoraTransmissao: TDateTimeField;
     cdsOffLineMsg: TStringField;
     dsOffLine: TDataSource;
-    procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
     FContingenciaNFCe: TContingenciaNFCe;
@@ -93,7 +93,6 @@ implementation
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
-  // Instancia a Thread TContingenciaNFCe, passando as configurações do ACBrNFe
   FContingenciaNFCe := TContingenciaNFCe.Create(ACBrNFe1.Configuracoes);
   {$IFDEF DELPHIXE_UP}
      FContingenciaNFCe.Start;
